@@ -27,7 +27,7 @@ var cheerio = require('cheerio');
 var HTMLFILE_DEFAULT = "index.html";
 var CHECKSFILE_DEFAULT = "checks.json";
 var URL_DEFAULT = "http://warm-hamlet-1138.herokuapp.com/";
-var rest = require('./restler');
+var rest = require('restler');
 
 var assertFileExists = function(infile) {
     var instr = infile.toString();
@@ -71,13 +71,13 @@ if(require.main == module) {
 	.parse(process.argv);
 
     if(program.url!==null){
-	var checkurl = testurl(program.url);
+	var checkurl = program.url;
 	rest.get(checkurl).on('complete', function(result) {
 	    if(result instanceof Error) {
 		console.log('Error: ' + result.message);
 		this.retry(5000); // try again after 5 sec
 	    }else{
-		fs.writeFileSync(outfile, result);
+		//fs.writeFileSync(outfile, result);
 		var checkJson = checkHtmlFile(program.file, program.checks);
 		var outJson = JSON.stringify(checkJson, null, 4);
 		console.log(outJson);
